@@ -108,9 +108,11 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
       color: color,
       footer: { text: COPYRIGHT_MESSAGE },
       timestamp: new Date(),
+      // Dont use CDN for images, use raw.githubusercontent.com.
+      // Also not updated for 8.x properly.
       image: {
         url: this.server.currentLayer
-          ? `https://squad-data.nyc3.cdn.digitaloceanspaces.com/main/${this.server.currentLayer.layerid}.jpg`
+          ? `https://raw.githubusercontent.com/Squad-Wiki/squad-wiki-pipeline-map-data/master/completed_output/_Current%20Version/images/${this.server.currentLayer.layerid}.jpg`
           : undefined
       }
     };
@@ -121,8 +123,15 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
   async updateStatus() {
     if (!this.options.setBotStatus) return;
 
+    let players = this.server.a2sPlayerCount;
+    if (this.server.publicQueue || this.server.reserveQueue)
+      players += `+${this.server.publicQueue + this.server.reserveQueue}`;
+
+    let slots = this.server.publicSlots;
+    if (this.server.reserveSlots) slots += `+${this.server.reserveSlots}`;
+
     await this.options.discordClient.user.setActivity(
-      `(${this.server.a2sPlayerCount}/${this.server.publicSlots}) ${
+      `(${players}/${slots}) ${
         this.server.currentLayer?.name || 'Unknown'
       }`,
       { type: 4 }

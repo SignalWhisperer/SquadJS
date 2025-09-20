@@ -36,9 +36,10 @@ SquadJS relies on being able to access the Squad server log directory in order t
 #### Installation
 1. [Download SquadJS](https://github.com/Team-Silver-Sphere/SquadJS/releases/latest) and unzip the download.
 2. Open the unzipped folder in your terminal.
-3. Install the dependencies by running `yarn install` in your terminal. Due to the use of Yarn Workspaces it is important to use `yarn install` and **not** `npm install` as this will not work and will break stuff.
-4. Configure the `config.json` file. See below for more details.
-5. Start SquadJS by running `node index.js` in your terminal.
+3. Install the dependencies by running `yarn install --ignore-engines` in your terminal. Due to the use of Yarn Workspaces it is important to use `yarn install --ignore-engines` and **not** `npm install` as this will not work and will break stuff.
+Documentation has been altered slightly from the `yarn install` normal install flow. This is a stop gap until the orignal issue is corrected.
+5. Configure the `config.json` file. See below for more details.
+6. Start SquadJS by running `node index.js` in your terminal.
 
 **Note** - If you are interested in testing versions of SquadJS not yet released please download/clone the `master` branch. Please also see [here](#versions-and-releases) for more information on our versions and release procedures.
 
@@ -66,13 +67,14 @@ The following section of the configuration contains information about your Squad
     "logReaderMode": "tail",
     "logDir": "C:/path/to/squad/log/folder",
     "ftp": {
+      "host": "xxx.xxx.xxx.xxx",
       "port": 21,
       "user": "FTP Username",
       "password": "FTP Password"
     },
     "sftp": {
       "host": "xxx.xxx.xxx.xxx",
-      "port": 21,
+      "port": 22,
       "username": "SFTP Username",
       "password": "SFTP Password"
     },
@@ -97,11 +99,10 @@ The following section of the configuration contains information about your Squad
 * `queryPort` - The query port of the server.
 * `rconPort` - The RCON port of the server.
 * `rconPassword` - The RCON password of the server.
-* `logReaderMode` - `tail` will read from a local log file. `ftp` will read from a remote log file using the FTP protocol.
+* `logReaderMode` - `tail` will read from a local log file, `ftp` will read from a remote log file using the FTP protocol, `sftp` will read from a remote log file using the SFTP protocol.
 * `logDir` - The folder where your Squad logs are saved. Most likely will be `C:/servers/squad_server/SquadGame/Saved/Logs`.
-* `ftp:port` - The FTP port of the server. Only required for `ftp` `logReaderMode`.
-* `ftp:user` - The FTP user of the server. Only required for `ftp` `logReaderMode`.
-* `ftp:password` - The FTP password of the server. Only required for `ftp` `logReaderMode`.
+* `ftp` - FTP configuration for reading logs remotely. Only required for `ftp` `logReaderMode`.
+* `sftp` - SFTP configuration for reading logs remotely. Only required for `sftp` `logReaderMode`.
 * `adminLists` - Sources for identifying an admins on the server, either remote or local.
 
   ---
